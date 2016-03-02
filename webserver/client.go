@@ -22,7 +22,7 @@ func resp_print(resp *http.Response) {
 func client_get() {
     //client := &http.Client{}
     //resp, err := client.Get("http://localhost:9090")
-    resp, err := http.Get("http://localhost:9090")
+    resp, err := http.Get("http://localhost:9090/upload")
     if err != nil {
         fmt.Println(err)
         log.Fatal("client Get failed")
@@ -45,7 +45,7 @@ func client_post() {
 }
 
 func main() {
-    //client_get()
-    client_post()
+    client_get()
+    //client_post()
 }
 
