@@ -11,13 +11,34 @@
   	<hr />
 
   	<h2>
-  		<font color=BlueViolet>待办事项：</font>
+  		<font color=BlueViolet>
+        待办事项：
+      </font>
   	</h2>
+    <tr>
+      {{$a := 1}}
+      {{range .}}
+        {{if eq .Status $a}}
+          <td><p>{{.Item}}</p></td>
+        {{else}}
+          <td><p><s>{{.Item}}</s></p></td>
+        {{end}}
+          <td>
+            <form atcion="/" method="post" name="id" value="xxxx">
+              <input type="submit" value="Finish"/>
+              <input type="submit" value="Delete"/>
+              <input type="submit" value="Undo"/>
+            </form>
+          </td>
+      {{end}}
+    </tr>
 
   	<hr />
 
   	<h2>
-  		<font color=DarkMagenta>新增：</font>
+  		<font color=DarkMagenta>
+        新增：
+      </font>
   	</h2>
 
   	<form action="/" method="post">
