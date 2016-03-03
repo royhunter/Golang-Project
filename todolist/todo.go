@@ -59,7 +59,7 @@ func Index(w http.ResponseWriter, r *http.Request) {
 		//req_print(r)
 		r.ParseForm()
 		//text := r.FormValue("event")
-		text := r.FormValue("id")
+		text := r.FormValue("event")
 		//id := ev.Count
 		//ev.Count++
 		//ev_it := event_item{Item: text, Status: INIT, Id: id}
@@ -69,8 +69,32 @@ func Index(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func New(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("method: ", r.Method)
+	if r.Method == "POST" {
+		r.ParseForm()
+		text := r.FormValue("event")
+		//id := ev.Count
+		//ev.Count++
+		//ev_it := event_item{Item: text, Status: INIT, Id: id}
+		//ev.Event = append(ev.Event, ev_it)
+		fmt.Println(text)
+		render(w, event_list)
+	}
+}
+
+func Delete(w http.ResponseWriter, r *http.Request) {
+
+}
+
+func Undo(w http.ResponseWriter, r *http.Request) {
+}
+
 func main() {
 	http.HandleFunc("/", Index)
+	http.HandleFunc("/new", New)
+	http.HandleFunc("/del", Delete)
+	http.HandleFunc("/undo", Undo)
 	err := http.ListenAndServe(":8888", nil)
 	if err != nil {
 		log.Fatal("ListenAndServe failed: ", err)

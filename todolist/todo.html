@@ -24,11 +24,9 @@
           <td><p><s>{{.Item}}</s></p></td>
         {{end}}
           <td>
-            <form atcion="/" method="post" name="id" value="xxxx">
-              <input type="submit" value="Finish"/>
-              <input type="submit" value="Delete"/>
-              <input type="submit" value="Undo"/>
-            </form>
+            <a href="/Finish?id={{.Id}}">FINISH</a>
+            <a href="/Delete?id={{.Id}}">Delete</a>
+            <a href="/Undo?id={{.Id}}">Undo</a>
           </td>
       {{end}}
     </tr>
@@ -41,7 +39,7 @@
       </font>
   	</h2>
 
-  	<form action="/" method="post">
+  	<form action="/New" method="post">
   		<input type="text" name="event" size="40" height="100">
   		<input type="submit" value="提交">
   	</form>
