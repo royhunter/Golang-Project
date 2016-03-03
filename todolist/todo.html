@@ -16,22 +16,20 @@
       </font>
   	</h2>
     <tr>
-      {{$a := 1}}
       {{range .}}
-        {{if eq .Status $a}}
+        {{if not .Finish}}
           <td><p>{{.Item}}</p></td>
         {{else}}
           <td><p><s>{{.Item}}</s></p></td>
         {{end}}
           <td>
-            <a href="/Finish?id={{.Id}}">FINISH</a>
-            <a href="/Delete?id={{.Id}}">Delete</a>
-            <a href="/Undo?id={{.Id}}">Undo</a>
+            <a href="/finish?id={{.Id}}">FINISH</a>
+            <a href="/delete?id={{.Id}}">DELETE</a>
+            <a href="/undo?id={{.Id}}">UNDO</a>
           </td>
+          <hr />
       {{end}}
     </tr>
-
-  	<hr />
 
   	<h2>
   		<font color=DarkMagenta>
@@ -39,7 +37,7 @@
       </font>
   	</h2>
 
-  	<form action="/New" method="post">
+  	<form action="/new" method="post">
   		<input type="text" name="event" size="40" height="100">
   		<input type="submit" value="提交">
   	</form>
