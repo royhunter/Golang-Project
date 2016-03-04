@@ -1,8 +1,9 @@
 package controllers
 
 import (
-	//"fmt"
+	"fmt"
 	"html/template"
+	"io/ioutil"
 	"net/http"
 	"strconv"
 	"todo_mvc/models"
@@ -10,16 +11,46 @@ import (
 
 var db_path = "./data/todo.sqlite"
 
+func showError(w http.ResponseWriter, message string) {
+	fmt.Fprintf(w, message)
+}
+
+/*
+func req_print(r *http.Request) {
+	fmt.Println("Method: ", r.Method)
+	fmt.Println("path: ", r.URL.Path)
+	fmt.Println("Proto: ", r.Proto)
+	fmt.Println("scheme: ", r.URL.Scheme)
+	fmt.Println("Header: ", r.Header)
+	fmt.Println("Content-Type: ", r.Header["Content-Type"])
+	r.ParseForm()
+	fmt.Println("Form: ", r.Form)
+	fmt.Println("ContentLength: ", r.ContentLength)
+	fmt.Println("Body: ")
+	defer r.Body.Close()
+	b, _ := ioutil.ReadAll(r.Body)
+	fmt.Println(string(b))
+}
+*/
+
 func render(w http.ResponseWriter, el map[string]*models.Event_item) {
 	t, _ := template.ParseFiles("views/todo.html")
 	t.Execute(w, el)
 }
 
 func Index(w http.ResponseWriter, r *http.Request) {
-	//fmt.Println("Index method: ", r.Method)
+	fmt.Println("Index method: ", r.Method)
+	//req_print(r)
 	if r.Method == "GET" {
-		ev_list := models.QueryAll(db_path)
-		render(w, ev_list)
+		if r.URL.Path == "/" {
+			ev_list := models.QueryAll(db_path)
+			render(w, ev_list)
+		} else {
+			showError(w, "404, unknow link")
+		}
+
+	} else {
+		showError(w, "Wront method")
 	}
 }
 
