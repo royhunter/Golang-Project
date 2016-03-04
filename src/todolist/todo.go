@@ -1,16 +1,15 @@
 package main
 
 import (
+	"database/sql"
 	"fmt"
+	_ "github.com/mattn/go-sqlite3"
 	"html/template"
 	"io/ioutil"
 	"log"
 	"net/http"
 	"strconv"
-	"database/sql"
-	_ "github.com/mattn/go-sqlite3"
 )
-
 
 type event_item struct {
 	Item   string
@@ -20,21 +19,21 @@ type event_item struct {
 
 var event_count = 2
 
-func QueryAll() (map[string] *event_item) {
+func QueryAll() map[string]*event_item {
 	db, err := sql.Open("sqlite3", "./todo.sqlite")
 	if err != nil {
 		log.Fatal("QueryAll db open failed", err)
 	}
 	defer db.Close()
 
-	sqlstring := `create table TODO (ID text PRIMARY KEY, ITEM text, FINISH int);`
-	db.Exec(sqlstring)
+	//sqlstring := `create table TODO (ID text PRIMARY KEY, ITEM text, FINISH int);`
+	//db.Exec(sqlstring)
 
 	sqlx := `SELECT * FROM TODO;`
 	rows, err := db.Query(sqlx)
 	defer rows.Close()
 
-	event_list := make(map[string] *event_item)
+	event_list := make(map[string]*event_item)
 	for rows.Next() {
 		var item string
 		var finish int
@@ -42,7 +41,6 @@ func QueryAll() (map[string] *event_item) {
 		rows.Scan(&id, &item, &finish)
 		event_list[id] = &event_item{item, finish, id}
 	}
-
 	return event_list
 }
 
@@ -99,7 +97,7 @@ func req_print(r *http.Request) {
 	fmt.Println(string(b))
 }
 
-func render(w http.ResponseWriter, el map[string] *event_item) {
+func render(w http.ResponseWriter, el map[string]*event_item) {
 	t, _ := template.ParseFiles("todo.html")
 	t.Execute(w, el)
 }
@@ -124,9 +122,9 @@ func New(w http.ResponseWriter, r *http.Request) {
 		id := event_count
 		event_count++
 		eii := event_item{
-			Item: text,
+			Item:   text,
 			Finish: 0,
-			Id: strconv.Itoa(id),
+			Id:     strconv.Itoa(id),
 		}
 		InsertItem(eii)
 		http.Redirect(w, r, "/", http.StatusSeeOther)
